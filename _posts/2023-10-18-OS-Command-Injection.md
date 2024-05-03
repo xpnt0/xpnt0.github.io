@@ -3,7 +3,7 @@ title: OS Command Injection
 author: xpnt
 date: 2023-10-18
 image:
-  path: https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/PortSwigger/Os_Command_Injection1.png
+  path: https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/Os_Command_Injection1.png
   height: 800
   width: 500
 categories: [Web Security, PortSwigger Academy]
@@ -28,10 +28,10 @@ Solution:
 We will start by intercepting the functionality of the product stock checker with `Burpsuite` and then we send it to `Repeter`.
 
 
-![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/PortSwigger/Os_Command_Injection2.png)
+![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/Os_Command_Injection2.png)
 
 
-![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/PortSwigger/Os_Command_Injection3.png)
+![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/Os_Command_Injection3.png)
 
 
 According to the context, we could assume that a command is being executed on the backend server like the below: 
@@ -44,7 +44,7 @@ Given this, we could place the following `productId` (as well as in the `storeId
 ```bash
 stockchecker.py random_productId;whoami; random_storeId
 ```
-![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/PortSwigger/Os_Command_Injection5.png)
+![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/Os_Command_Injection5.png)
 
 As we could see, we achieved command execution on the server side! Once this is done we see that command that executed the stock checker was the following(`ps aux`):
 
@@ -65,9 +65,9 @@ Solution:
 
 We will start by intercepting the feedback function with `Burpsuite` and then we send it to `Repeter`.
 
-![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/PortSwigger/Os_Command_Injection6.png)
+![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/Os_Command_Injection6.png)
 
-![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/PortSwigger/Os_Command_Injection9.png)
+![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/Os_Command_Injection9.png)
 
 
 According to the context, we could assume that a command is being executed on the backend server like the below: 
@@ -78,8 +78,8 @@ mail -m my_message -aFrom my_email -uname my_name -s my_subject -to feedback@vul
 
 In that case, we place in the `name` place the following command at system level.We place this specific command because it is a function that doesn't return a output to us (`blind`). If our conjecture was correct, the page should take 20 seconds or more to respond.Let's see what happens.
 
-![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/PortSwigger/Os_Command_Injection7.png)
+![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/Os_Command_Injection7.png)
 
 The response was delayed 28 seconds!This meaning that we can execute commands in the backend server!
-![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/PortSwigger/Os_Command_Injection8.png)
+![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/Os_Command_Injection8.png)
 
