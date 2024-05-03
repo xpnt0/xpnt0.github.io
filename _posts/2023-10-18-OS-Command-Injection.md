@@ -4,7 +4,7 @@ author: xpnt
 date: 2023-10-18
 image:
   path: https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/PortSwigger/Os_Command_Injection1.png
-  height: 1500
+  height: 800
   width: 500
 categories: [Web Security, PortSwigger Academy]
 tags: [labs,owasp,command injection,burpsuite]
