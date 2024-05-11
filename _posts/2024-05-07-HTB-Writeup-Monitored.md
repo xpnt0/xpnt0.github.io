@@ -9,11 +9,11 @@ image:
 categories: [Hack The Box, "Season 4: Savage Lands"]
 tags: [labs,snmp,snmpwalk,nagios XI]
 ---
-
+ 
+ [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/583)
 
 # WriteUp
 
-- [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/583)
 - We start with a port scan. With it, we notice that the machine has the TCP ports `22, 80, 389, 443, 5667` open.
 
 ```bash
