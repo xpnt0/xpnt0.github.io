@@ -14,6 +14,8 @@ tags: [labs,snmp,snmpwalk,nagios XI]
 
 # WriteUp
 
+# User
+
 - We start with a port scan. With it, we notice that the machine has the TCP ports `22, 80, 389, 443, 5667` open.
 
 ```bash

@@ -12,6 +12,8 @@ tags: [labs,cryptedBytes,OFBiz,XML-RPC,Bussiness Logic Vulnerability]
 
 [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/582)
 
+# WriteUp
+
 # User
 
 - The pentester starts with a port scan and discovers that ports `22`, `80`, `443`, and `37703` are open. Upon noticing the existence of the domain `bizness.htb`, they proceed to add it to the `/etc/hosts` file.
