@@ -3,7 +3,7 @@ title: "HTB Writeup: Monitored"
 author: xpnt
 date: 2024-05-07
 image:
-  path: https://pbs.twimg.com/media/GDkfNA1asAAJz8P?format=jpg&name=medium
+  path: https://pbs.twimg.com/media/GDkfNA1asAAJz8P?format=jpg&name=medium###Q1NVe3hwbnRfMTB2MzVfbTRydS1jaDRufQ==
   height: 1500
   width: 500
 categories: [Hack The Box, "Season 4: Savage Lands"]

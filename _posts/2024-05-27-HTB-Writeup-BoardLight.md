@@ -59,23 +59,18 @@ sudo tee -a /etc/hosts <<< "10.129.67.131 board.htb"
 ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt -u http://board.htb -H "Host: FUZZ.board.htb" -ic -t 200 -c -fs 15949
 ```
 
-Como nota: 
-- Something worth mentioning is that the tool '`ffuf`', (similar to the '`Burp Suite`' proxy), performs a character count, which is represented in the 'size' field of the output. This can be observed in line 200 of the Go code in the file `('simple.go')` available at: [simple.go](https://github.com/ffuf/ffuf/blob/master/pkg/runner/simple.go)
-
-![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528080604.png)
-
-In order to discover the new subdomain, it's necessary to filter the `size` field. This is required because for _non-existent subdomains_, the response code will remain `200 OK`, and it will display the default response content of the `board.htb` domain. To calculate the `fs` corresponding to `board.htb`, you just need to use the following command.
-
+>Comments:
+>Something worth mentioning is that the tool '`ffuf`', (similar to the '`Burp Suite`' proxy), performs a character count, which is represented in the 'size' field of the output. This can be observed in line 200 of the Go code in the file `('simple.go')` available at: [simple.go](https://github.com/ffuf/ffuf/blob/master/pkg/runner/simple.go)
+>![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528080604.png)
+>In order to discover the new subdomain, it's necessary to filter the `size` field. This is required because for _non-existent subdomains_, the response code will remain `200 OK`, and it will display the default response content of the `board.htb` domain. To calculate the `fs` corresponding to `board.htb`, you just need to use the following command.
 ```bash
 curl -s http://board.htb | wc -c
 # 15949
 ```
-
-It's worth noting that the same information could have been obtained by passing the request through the `'Burp Suite'` proxy, where it would be available in the response header `'Content-Length'`, or by inspecting the `Network tab` in your preferred browser, as illustrated in the following image.
-
-![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528082500.png)
-
-![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528082823.png)
+>It's worth noting that the same information could have been obtained by passing the request through the `'Burp Suite'` proxy, where it would be available in the response header `'Content-Length'`, or by inspecting the `Network tab` in your preferred browser, as illustrated in the following image.
+>![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528082500.png)
+>![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528082823.png)
+{: .prompt-info }
 
 - Great! The pentester discovered the subdomain `crm.board.htb` as a result, he added this subdomain in the `/etc/hosts` file and proceeded to conduct further analysis of this new subdomain.
 
@@ -172,20 +167,21 @@ grep -P ".*sh$" /etc/passwd
 
 ![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528103927.png)
 
-- Assuming there is credential reuse, the pentester attempted to switch to the user `larissa`, which was discovered earlier. Success! Now they have switched to the user `larissa`.
+- Assuming there is credential reuse, the pentester attempted to switch to the user `larissa`, which was discovered earlier. Success! Now they have switched to the user `larissa` and read the file `/home/larissa/user.txt`.
 
 ![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528104337.png)
+
+# Root
 
 - Once access as the user `larissa` is obtained, the pentester continues the enumeration to escalate privileges to root, now with the new privileges and permissions acquired for this user. They search for `SUID binaries` and identify non-common binaries with `SUID permission`, especially those related to `enlightenment`.
 
 ```bash
 find / -user root -perm -4000 -exec ls -ldb {} \; 2>/dev/null
 ```
-
-# Note: 
-Tip: It is necessary to emphasize these binaries further, as curiously, the SUID permissions are applied to binaries related to `EnLIGHTenment` (which is one of the main window managers of Linux), which has a certain relationship with the machine name (`BoardLIGHT`).
-
-![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528105515.png)
+ 
+>Tip: It is necessary to emphasize these binaries further, as curiously, the SUID permissions are applied to binaries related to `EnLIGHTenment` (which is one of the main window managers of Linux), which has a certain relationship with the machine name (`BoardLIGHT`).
+>![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528105515.png)
+{: .prompt-tip }
 
 - A quick search for vulnerabilities related to the `Enlightenment (desktop environment)` software led us to discover the [`CVE-2022-37706`](https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit) discovered by [MaherAzzouzi](https://github.com/MaherAzzouzi), which allows privilege escalation to root user. Essentially, this [`CVE-2022-37706`](https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit) consists of a `command injection` exploiting the `logical bug` caused by repeated calls to the `eina_strbuf_append_printf()` function. An excellent explanation can be found on the GitHub page of [MaherAzzouzi](https://github.com/MaherAzzouzi). Therefore, the pentester used that Proof of Concept (PoC) for privilege escalation.
 
@@ -201,4 +197,6 @@ chmod a+x /tmp/exploit
 
 ![](/assets/images/HTB-Writeup-BoardLight/Pasted image 20240528113816.png)
 
-- I hope you had as much fun reading this write up as I did writing it. Happy Hacking!!
+
+>I hope you had as much fun reading this write up as I did writing it. Happy Hacking!!👾
+{: .prompt-tip }
