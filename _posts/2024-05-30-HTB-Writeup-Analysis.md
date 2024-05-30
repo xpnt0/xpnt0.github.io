@@ -397,7 +397,7 @@ ________________________________________________
 :: Progress: [40952/40952] :: Job [4/4] :: 149 req/sec :: Duration: [0:01:02] :: Errors: 0 ::
 ```
 
-![[Pasted image 20240529164137.png]]
+![](/assets/images/HTB-Writeup-Analysis/Pasted image 20240529164137.png)
 
 - So bruteforce parameters
 
@@ -523,7 +523,7 @@ nc -lvnp 4444
 
 ```
 
-![[Pasted image 20240530090848.png]]
+![](/assets/images/HTB-Writeup-Analysis/Pasted image 20240530090848.png)
 
 
 ```bash
