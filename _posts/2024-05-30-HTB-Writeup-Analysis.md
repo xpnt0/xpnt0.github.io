@@ -1,4 +1,3 @@
-
 ---
 title: "HTB Writeup: Analysis"
 author: xpnt
@@ -10,7 +9,7 @@ image:
 categories: [Hack The Box, "Season 4: Savage Lands"]
 tags: [labs,ldap_injection,feroxbuster,autologon,ffuf,dll_hijacking,snort]
 ---
-----
+
 - [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/584)
 
 ```bash
