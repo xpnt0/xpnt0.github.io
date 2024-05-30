@@ -1,7 +1,7 @@
 ---
 title: "HTB Writeup: Bizness"
 author: xpnt
-date: 2024-05-02
+date: 2024-05-11
 image:
   path: https://pbs.twimg.com/media/GDA3faiXQAA_He5?format=jpg&name=medium
   height: 1500
