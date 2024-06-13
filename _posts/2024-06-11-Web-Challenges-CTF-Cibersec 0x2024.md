@@ -13,9 +13,11 @@ tags: [XSS,Git,curl,SOP,Information_Disclosure]
 # Challenges
 
 ## levantamoralnumberone - Easy
-##### Description
-Parece como si alguien hubiera hecho defacing a nuestro sitio. ¿Quizás todavía haya alguna forma de autenticarse?
-##### Writeup
+
+#### Description
+- Parece como si alguien hubiera hecho defacing a nuestro sitio. ¿Quizás todavía haya alguna forma de autenticarse?
+
+#### Writeup
 - Upon accessing the website, we encountered a message indicating that we haven't sent data via a POST request.
 
 ![](/assets/images/CTF-CiberSec-0x2024/Pasted image 20240611213225.png)
@@ -38,10 +40,13 @@ curl -s -X POST http://165.227.106.113/post.php -d "password=71urlkufpsdnlkadsf&
 
 
 ## queee?? noooo!! que mala eres 🤖 - Easy
-##### Description
-Podrás encontrar el mensaje oculto en este sitio? Apurate antes que se oxide
-##### Writeup
+
+#### Description
+- Podrás encontrar el mensaje oculto en este sitio? Apurate antes que se oxide
+
+#### Writeup
 - The emoji of a `robot` is a hint for us to check the `/robots.txt` file, which essentially contains instructions for bots (e.g., web crawlers) that tell them which webpages they can and cannot access
+
 - Upon visiting `/robots.txt` we can find gibberish of digits and letters that appears to be a base64 encoded string. After decoding it, we obtain the flag!
 
 ![](/assets/images/CTF-CiberSec-0x2024/Pasted image 20240609171652.png)
@@ -55,9 +60,11 @@ echo -n "ZmxhZ3tyMGIwdDFuX3AxcDFwMX0=" | base64 -d;echo
 - Flag: `flag{r0b0t1n_p1p1p1}`
 
 ## Uatu - Easy
-##### Description
+
+#### Description
 - Se me cayó una flag en la pagina de inicio, podrás encontrarla?
-##### Writeup
+
+#### Writeup
 - Because it's a CTF and the description seems to indicate that the flag is on the homepage, I'll search for HTML comments using the `curl` command.
 
 ```bash
@@ -78,12 +85,12 @@ curl -s https://ctf.uni.edu.pe/ | grep -oP '<!--.*-->'
 
 
 ## sop or soup, what's the difference - Easy
-##### Description
+#### Description
 
 Ah, the SOP – it's like the secret sauce that makes websites shine! Add a dash of CORS, sprinkle in some CSP, and voilà! It's like crafting your own digital masterpiece at home. Who wouldn't want a soup loaded with images? Personally, I'm all in for that flavor-packed feast!
 
 site: https://xpnt0.github.io
-##### Writeup
+#### Writeup
 - We know that SOP serves as a browser security measure, preventing websites from attacking each other, commonly used to thwart XSS, CSRF, and the like. However, the concept is essentially broader, aiming to prevent one page from accessing sensitive data on another web page. Nevertheless, there are exceptions to this rule. The SOP permits the embedding of images via the `<img>` tag, media via the `<video>` tag, and JavaScript includes using the `<script>` tag. However, while these external resources can be loaded by the page, any JavaScript, for instance, the use of `<canvas>` to read pixel data, won't be able to access the contents of these external resources.
 
 - Since in the statement they emphasize the images loaded thanks to SOP. I will recover the links from which they are uploaded.
@@ -106,7 +113,7 @@ echo 'Q1NVe3hwbnRfMTB2MzVfbTRydS1jaDRufQ==' | base64 -d;echo
 
 ## git101 - Easy
 
-##### Description
+#### Description
 
 GitHub repositories conceal secrets that should never be discovered. Can you find my secret? I'm sure I removed it.
 
@@ -114,7 +121,7 @@ Flag format: CSU{anything_here}
 Site: https://xpnt0.github.io
 
 
-##### Writeup
+#### Writeup
 - I'll review the commits to check for accidentally exposed secrets.
 
 ```bash
@@ -136,11 +143,11 @@ git log --author='xpnt'  --pretty=format:"%h" | while read -r commith;do PAGER= 
 
 ## practicaste o no? - Medium
 
-##### Description
+#### Description
 Intenta eludir mis mecanismos de seguridad, cuidado con el waf XD!!!.
 Site: http://165.227.106.113/encabezado.php
 
-##### Writeup
+#### Writeup
 - When accessing `/encabezado.php`, I notice that the server responds with a `404 Not Found` code, presumably because the resource does not exist.
 
 ```bash
@@ -181,18 +188,19 @@ curl http://165.227.106.113/header.php -A Sup3rS3cr3tAg3nt -H 'Referer: awesomes
 
 ## Poemsss - Almost Hard
 
-##### Description
+#### Description
 Ya toca subir el lvl, crea tu cuenta y envía tu poema, los poemas seleccionados se llevarán la gift card. 
 
 Site: http://52.87.255.81:8083
-##### Writeup
+
+#### Writeup
 
 - This challenge approaches a white-box perspective, unlike the other challenges. However, when I solved the challenge, I approached it from a black-box standpoint. Therefore, I will explain both methods and the mitigation of the vulnerability present in this application.
 
 
-###### Comments
+#### Important
 
->Since the instance is no longer available, I'll set up the web application within a Docker container and work locally. Therefore, I'll modify the original zip file. The changes made aim to alter the URL of the driver in the `selenium` service and the functionality of `doVisit()`. You can download the new zip file here.
+>Comments: Since the instance is no longer available, I'll set up the web application within a Docker container and work locally. Therefore, I'll modify the original zip file. The changes made aim to alter the URL of the driver in the `selenium` service and the functionality of `doVisit()`. You can download the new zip file here.
 >![](/assets/images/CTF-CiberSec-0x2024/Pasted image 20240612004104.png)
 >Then, I'll simply run the `deploy-challenge.sh`, which will automatically deploy the Docker containers.
 ```bash
@@ -202,7 +210,7 @@ sudo bash deploy-challenge.sh
  {: .prompt-info }
 
 
-###### Black-Box approach
+#### Black-Box approach
 
 - Upon accessing the website, I noticed it's a poetry competition. Since there aren't any interesting functionalities available from an unauthenticated standpoint, I'll create an account to explore potential new features.
 
@@ -290,10 +298,9 @@ cat admin_dash.html
 
 - Flag: `CSU{n1c3_xss_t3chn1qu3}`
 
-###### WhiteBox approach and several types of Mitigation
+#### WhiteBox approach and several types of Mitigation
  >I'll only show them at the welcome meeting, so I hope to see you 😁!!
  {: .prompt-info }
 
  >I hope you had as much fun reading this write up as I did writing it. Happy Hacking!!👾
-
 {: .prompt-tip }
