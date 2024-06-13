@@ -295,4 +295,5 @@ cat admin_dash.html
  {: .prompt-info }
 
  >I hope you had as much fun reading this write up as I did writing it. Happy Hacking!!👾
+ 
 {: .prompt-tip }
