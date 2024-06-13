@@ -138,7 +138,7 @@ git log --author='xpnt'  --pretty=format:"%h" | while read -r commith;do PAGER= 
 
 ##### Description
 Intenta eludir mis mecanismos de seguridad, cuidado con el waf XD!!!.
-Site: [http://165.227.106.113/encabezado.php](http://165.227.106.113/encabezado.php)
+Site: http://165.227.106.113/encabezado.php
 
 ##### Writeup
 - When accessing `/encabezado.php`, I notice that the server responds with a `404 Not Found` code, presumably because the resource does not exist.
@@ -184,7 +184,7 @@ curl http://165.227.106.113/header.php -A Sup3rS3cr3tAg3nt -H 'Referer: awesomes
 ##### Description
 Ya toca subir el lvl, crea tu cuenta y envía tu poema, los poemas seleccionados se llevarán la gift card. 
 
-Site: [http://52.87.255.81:8083](http://52.87.255.81:8083/)
+Site: http://52.87.255.81:8083
 ##### Writeup
 
 - This challenge approaches a white-box perspective, unlike the other challenges. However, when I solved the challenge, I approached it from a black-box standpoint. Therefore, I will explain both methods and the mitigation of the vulnerability present in this application.
@@ -295,5 +295,5 @@ cat admin_dash.html
  {: .prompt-info }
 
  >I hope you had as much fun reading this write up as I did writing it. Happy Hacking!!👾
- 
+
 {: .prompt-tip }
