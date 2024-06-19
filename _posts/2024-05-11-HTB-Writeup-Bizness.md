@@ -266,3 +266,5 @@ convert_hash "$1"
 
 ![](/assets/images/HTB-Writeup-Bizness/Pasted image 20240511113903.png)
 
+>I hope you had as much fun reading this write up as I did writing it. If this writeup helped you, please feel free to go to my [`Hack The Box profile (xpnt)`](https://app.hackthebox.com/profile/1504363) and give me a respect 😁. Happy Hacking!!👾
+{: .prompt-tip }

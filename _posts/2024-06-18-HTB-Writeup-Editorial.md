@@ -300,5 +300,5 @@ cat /root/root.txt
 
 
 
->I hope you had as much fun reading this write up as I did writing it. Happy Hacking!!👾
+>I hope you had as much fun reading this write up as I did writing it. If this writeup helped you, please feel free to go to my [`Hack The Box profile (xpnt)`](https://app.hackthebox.com/profile/1504363) and give me a respect 😁. Happy Hacking!!👾
 {: .prompt-tip }
