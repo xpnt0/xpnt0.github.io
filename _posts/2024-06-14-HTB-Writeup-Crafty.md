@@ -221,5 +221,5 @@ C:\users\svc_minecraft\RunasCs.exe Administrator s67u84zKq8IXw "cmd /c start C:\
 >Comments: It's interesting to know that `meterpreter` is a shell approximation that uses `Shellwords`, which is why it's necessary to use double quotes or single quotes to execute commands. [Source](https://github.com/rapid7/metasploit-framework/issues/10701)
  {: .prompt-info }
 
->I hope you had as much fun reading this write up as I did writing it. If this writeup helped you, please feel free to go to my [`Hack The Box profile (xpnt)`](https://app.hackthebox.com/profile/1504363) and give me a respect 😁. Happy Hacking!!👾
+>I hope you had as much fun reading this write up as I did writing it. If this writeup helped you, please feel free to go to my [`Hack The Box profile (xpnt)`](https://app.hackthebox.com/users/1504363) and give me a respect 😁. Happy Hacking!!👾
 {: .prompt-tip }

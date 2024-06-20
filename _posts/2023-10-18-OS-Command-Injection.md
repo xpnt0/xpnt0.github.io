@@ -83,5 +83,5 @@ In that case, we place in the `name` place the following command at system level
 The response was delayed 28 seconds!This meaning that we can execute commands in the backend server!
 ![](https://raw.githubusercontent.com/xpnt0/xpnt0.github.io/master/assets/images/OS-Command-Injection/Os_Command_Injection8.png)
 
->I hope you had as much fun reading this write up as I did writing it. If this writeup helped you, please feel free to go to my [`Hack The Box profile (xpnt)`](https://app.hackthebox.com/profile/1504363) and give me a respect 😁. Happy Hacking!!👾
+>I hope you had as much fun reading this write up as I did writing it. If this writeup helped you, please feel free to go to my [`Hack The Box profile (xpnt)`](https://app.hackthebox.com/users/1504363) and give me a respect 😁. Happy Hacking!!👾
 {: .prompt-tip }
