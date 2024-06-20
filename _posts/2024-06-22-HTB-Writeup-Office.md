@@ -1,7 +1,7 @@
 ---
 title: "HTB Writeup: Office"
 author: xpnt
-date: 2024-06-20
+date: 2024-06-22
 image:
   path: https://pbs.twimg.com/media/GGYTVglW4AAhki3?format=jpg&name=medium
   height: 1500
