@@ -795,6 +795,7 @@ c:\Windows\Tasks\SharpGPOAbuse.exe --AddLocalDomain --UserAccount HHogan --GPONa
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619212309.png)
 
 - Finally, with `psexec.py` from the Impacket Suite, it's possible to obtain a shell as `NT Authority\System` and read `root.txt`.
+
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619213751.png)
 
 >I hope you had as much fun reading this write up as I did writing it. If this writeup helped you, please feel free to go to my [`Hack The Box profile (xpnt)`](https://app.hackthebox.com/users/1504363) and give me a respect 😁. Happy Hacking!!👾
