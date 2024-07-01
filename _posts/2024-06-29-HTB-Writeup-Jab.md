@@ -14,6 +14,11 @@ tags: [labs,openfire,jabber,xmpp,ASREProasting,pidgin]
 
 - [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/589)
 
+## Description 
+
+- Jab is a medium-difficulty Windows machine that features an Openfire XMPP server, hosted on a Domain Controller (DC). Public registration on the XMPP server allows the user to register an account. Then, by retrieving a list of all the users on the domain, a kerberoastable account is found, which allows the attacker to crack the retrieved hash for the user's password. By visiting the account's XMPP chat rooms, another account's password is retrieved. This new account has DCOM privileges over the DC, thus granting the attacker local access on the machine. Finally, a malicious plugin uploaded through the locally-hosted Openfire Administration Panel gives the user SYSTEM access.
+
+
 ## Enumeration
 
 
@@ -546,7 +551,7 @@ kerbrute userenum -d JAB.HTB --dc 10.10.11.4 /usr/share/seclists/Usernames/xato-
 >If you encounter any issues with the installation, you can refer to this [excellent guide](https://ed.fnal.gov/lincon/act/tech/pidgin/), although it may be outdated, for installing Pidgin and configuring the relevant Jabber service.
 {: .prompt-info }
 
-- Since at this point `kerbrute` was still enumerating users, the pentester decided to explore if there was any way to obtain a user list. After some searching, he found a method; however, the panel he discovered didn't allow exporting or copying the list. A detailed explanation of the process can be found [here](https://issues.imfreedom.org/issue/PIDGIN-7357/Add-user-search-for-user-enhancement#focus=Comments-4-42520.0-0).
+- Since at this point `kerbrute` was still enumerating users, the pentester decided to explore if there was any way to obtain a user list. After some searching, he found a method; however, the panel he discovered didn't allow exporting or copying the list. A detailed explanation of the process to obtain a user list can be found [here](https://issues.imfreedom.org/issue/PIDGIN-7357/Add-user-search-for-user-enhancement#focus=Comments-4-42520.0-0).
 
 ![](/assets/images/HTB-Writeup-Jab/Pasted image 20240609200635.png)
 
@@ -555,13 +560,17 @@ kerbrute userenum -d JAB.HTB --dc 10.10.11.4 /usr/share/seclists/Usernames/xato-
 ![](/assets/images/HTB-Writeup-Jab/Pasted image 20240609200456.png)
 
 
-- However, it's possible to use the `-d` option of `Pidgin`, which prints debugging messages to stdout. The pentester can then capture these messages and store them in a file named `info_debug.txt` for further processing.
+
+- However, it's possible to use the `-d` option of the `pidgin` command, which prints debugging messages to stdout. Since the `user list` is the result of a search operation within `Pidgin`, it would be correct to assume that the `user list` will be output as `debugging messages`. The pentester performed the same steps mentioned earlier to view the `user list` and stored all `debugging messages` in a file named `info_debug.txt` for further processing.
+
 
 ```bash
 pidgin -d 2>&1 >  info_debug.txt 
 ```
 
+
 - To obtain a list of users, we will filter the content of the `info_debug.txt` file for email addresses and store them in the `users_jabber.txt` file.
+
 
  ```bash
 cat info_debug.txt | grep -oP "(\w*@jab\.htb)" | sed 's/@jab.htb//g' | sort -u | sponge users_jabber.txt

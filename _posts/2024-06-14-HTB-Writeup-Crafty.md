@@ -14,6 +14,10 @@ tags: [labs,Log4j,Minecraft,connection strings,jd-gui]
 
 - [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/587)
 
+## Description
+
+- Crafty is an easy-difficulty Windows machine featuring the exploitation of a `Minecraft` server. Enumerating the version of the server reveals that it is vulnerable to pre-authentication Remote Code Execution (RCE), by abusing `Log4j Injection`. After obtaining a reverse shell on the target, enumerating the filesystem reveals that the administrator composed a Java-based `Minecraft` plugin, which when reverse engineered reveals `rcon` credentials. Those credentials are leveraged with the `RunAs` utility to gain Administrative access, compromising the system.
+
 ## Enumeration
 
 - The pentester starts with a scan ports and discovered that `80,25535` are open.  Upon noticing the existence of the domain `crafty.htb`, he proceeds to add it to the `/etc/hosts` file.

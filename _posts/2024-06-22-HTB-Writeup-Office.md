@@ -13,6 +13,9 @@ tags: [labs,cve-2023-23752,joomla,SharpGPOAbuse,cve-2023-2255,LibreOffice,Generi
 # Writeup
 - [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/588)
 
+## Description
+
+- Office is a hard-difficulty Windows machine featuring various vulnerabilities including Joomla web application abuse, PCAP analysis to identify Kerberos credentials, abusing LibreOffice macros after disabling the `MacroSecurityLevel` registry value, abusing MSKRP to dump DPAPI credentials and abusing Group Policies due to excessive Active Directory privileges.
 
 ## Enumeration
 - The pentester begins with a port scan and discovers that the ports `53, 80, 88, 139, 389, 443, 445, 464, 593, 636, 3268, 3269, 5985, 9389, 49664, 49668, 57166, 57326, 57333, 57357` are open, typical on Windows targets. He notices the presence of the domain `office.htb` and the DNS name `dc.office.htb`, so he adds them to the `/etc/hosts` file.

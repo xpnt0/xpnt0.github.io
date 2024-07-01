@@ -10,7 +10,15 @@ categories: [Hack The Box, "Season 4: Savage Lands"]
 tags: [labs,ldap_injection,feroxbuster,autologon,ffuf,dll_hijacking,snort]
 ---
 
+# Writeup
+
 - [Link: Pwned Date](https://www.hackthebox.com/achievement/machine/1504363/584)
+
+## Description
+
+- Analysis is a hard-difficulty Windows machine, featuring various vulnerabilities, focused on web applications, Active Directory (AD) privileges and process manipulation. Initially, an LDAP Injection vulnerability provides us with credentials to authenticate on a protected web application. Through this application, access to the local system is obtained by gaining command execution through an HTA file upload. On the target system, credentials for another user are found in the web application's log files. Subsequently, by implementing an API Hook on `BCTextEncoder`, an encrypted password is decrypted and used to pivot to another user. Finally, by changing the password of an account that has `DCSync` rights against the domain, administrative access to the domain controller is obtained.
+
+## Enumeration
 
 ```bash
 # Nmap 7.94SVN scan initiated Wed May 29 16:16:01 2024 as: nmap -sCV -n -Pn -p53,80,88,135,139,389,445,464,593,636,3268,3269,3306,5985,9389,33060,47001,49664,49665,49666,49669,49671,4
