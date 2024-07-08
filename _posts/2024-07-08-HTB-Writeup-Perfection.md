@@ -138,7 +138,7 @@ uid=1001(susan) gid=1001(susan) groups=1001(susan),27(sudo)
 
 ![](/assets/images/HTB-Writeup-Perfection/Pasted image 20240708065809.png)
 
-- Since attempting to crack the passwords offline using a password wordlist like `rockyou.txt` and others didn't yield results, and considering it's a CTF scenario, the pentester then proceeded to enumerate files owned by the user 'susan' in search of more clues. However, they didn't find anything interesting.
+- Since attempting to crack the passwords offline using a password wordlist like `rockyou.txt` and others didn't yield results, and considering it's a CTF scenario, the pentester then proceeded to enumerate files owned by the user 'susan' in search of more clues. However, he didn't find anything interesting.
 
 ```bash
 find / \( -path /proc -prune \) -o \( -path /sys -prune \) -o \( -path /run -prune \) -o -user susan -exec ls -ldah {} \; 2>/dev/null
@@ -147,7 +147,7 @@ find / \( -path /proc -prune \) -o \( -path /sys -prune \) -o \( -path /run -pru
 
 ![](/assets/images/HTB-Writeup-Perfection/Pasted image 20240708074019.png)
 
-- While it's true that they didn't find files directly owned by the user 'susan', there's a possibility that there are files owned by the group 'susan' which might also be readable by the user 'susan'. The pentester proceeded to enumerate them and noted the existence of the file `/var/mail/susan`.
+- While it's true that he didn't find files directly owned by the user 'susan', there's a possibility that there are files owned by the group 'susan' which might also be readable by the user 'susan'. The pentester proceeded to enumerate them and noted the existence of the file `/var/mail/susan`.
 
 ```bash
 find / \( -path /proc -prune \) -o \( -path /sys -prune \) -o \( -path /run -prune \) -o -group susan -exec ls -ldah {} \; 2>/dev/null
